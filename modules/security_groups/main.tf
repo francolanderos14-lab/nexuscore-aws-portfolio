@@ -167,3 +167,42 @@ resource "aws_security_group_rule" "bastion_egress_privadas" {
   security_group_id = aws_security_group.bastion.id
   description       = "SSH hacia subredes privadas de computo"
 }
+resource "aws_security_group_rule" "bastion_egress_https" {
+  type              = "egress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.bastion.id
+  description       = "HTTPS hacia internet para instalar paquetes"
+}
+
+resource "aws_security_group_rule" "bastion_egress_http" {
+  type              = "egress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.bastion.id
+  description       = "HTTP hacia internet"
+}
+
+resource "aws_security_group_rule" "bastion_egress_rds" {
+  type                     = "egress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.rds.id
+  security_group_id        = aws_security_group.bastion.id
+  description              = "MySQL hacia RDS desde Bastion"
+}
+
+resource "aws_security_group_rule" "rds_ingress_bastion" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.bastion.id
+  security_group_id        = aws_security_group.rds.id
+  description              = "MySQL desde Bastion Host"
+}
