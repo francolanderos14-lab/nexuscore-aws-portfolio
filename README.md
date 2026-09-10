@@ -60,3 +60,9 @@ Configuración de la función AWS Lambda activada por reglas cron de Amazon Even
 ### 5. Monitoreo y Observabilidad
 Panel de CloudWatch mostrando el estado correcto de las 7 alarmas configuradas para la salud del sistema:
 ![Alarmas CloudWatch](./images/cloudwatch.png)
+
+¿Qué problema resuelve?
+
+Levantar infraestructura en la nube "a mano" (clickeando en la consola de AWS) tiene un costo oculto: es lento, difícil de replicar igual dos veces, y casi imposible de auditar cuando algo falla — nadie recuerda exactamente qué se configuró ni en qué orden. Además, dejar recursos corriendo 24/7 cuando solo se usan en horario laboral genera gasto innecesario, algo crítico cuando el presupuesto es limitado.
+
+Este proyecto resuelve ambos problemas: toda la infraestructura se define como código con Terraform, así que se puede reconstruir exactamente igual con un solo comando, revisar cambios antes de aplicarlos, y recuperarse rápido si algo se rompe. Y para el problema del costo, se automatizó el apagado y encendido del entorno fuera de horario laboral, reduciendo el gasto operativo sin sacrificar disponibilidad cuando sí se necesita.
